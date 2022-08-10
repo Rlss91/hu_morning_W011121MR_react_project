@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 const ForgetPasswordPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const { keyParam, encryptedEmail } = useParams();
+  const { keyParam, iv, encryptedData } = useParams();
   console.log("keyParam", keyParam);
   const handlePasswordChange = (ev) => {
     setPassword(ev.target.value);
@@ -17,7 +17,9 @@ const ForgetPasswordPage = () => {
     if (password === confirmPassword) {
       //! joi validation
       axios
-        .post(`/auth/recoverpassword/${keyParam}/${encryptedEmail}`)
+        .post(`/auth/recoverpassword/${keyParam}/${iv}/${encryptedData}`, {
+          password,
+        })
         .then((data) => {
           console.log("success", data);
           //* redirect to login page

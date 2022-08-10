@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="container">
       <Switch>
-        <Route path="/recoverpassword/:keyParam/:encryptedEmail">
+        <Route path="/recoverpassword/:keyParam/:iv/:encryptedData">
           <ForgetPasswordPage />
         </Route>
       </Switch>
