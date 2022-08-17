@@ -20,6 +20,7 @@ axios.interceptors.request.use((config) => {
   if (token) {
     //if token saved in localStorage then
     //I want to add the token to the header of the request
+    console.log("token", token);
     config.headers["x-auth-token"] = token;
   }
   return config;

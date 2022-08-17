@@ -1,10 +1,11 @@
 import { useState } from "react";
+import axios from "axios";
 
 const NewProductPage = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
-  const [img, setImg] = useState([]);
+  const [img, setImg] = useState(null);
 
   const handleNameChange = (ev) => {
     setName(ev.target.value);
@@ -15,12 +16,33 @@ const NewProductPage = () => {
   const handleDescriptionChange = (ev) => {
     setDescription(ev.target.value);
   };
+  const handleImgChange = (ev) => {
+    // console.log(ev);
+    setImg(ev.target.files[0]);
+  };
+  const handleSubmit = (ev) => {
+    ev.preventDefault();
+    const formData = new FormData();
+    formData.append("prudImg", img);
+    formData.append("name", name);
+    formData.append("price", price);
+    formData.append("description", description);
+    axios
+      .post("/products", formData)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <form
       method="post"
       action="http://localhost:3001/api/products"
-      enctype="multipart/form-data"
+      encType="multipart/form-data"
+      onSubmit={handleSubmit}
     >
       <div>
         <label htmlFor="name">Name:</label>
@@ -55,7 +77,12 @@ const NewProductPage = () => {
       </div>
       <div>
         <label htmlFor="prudImg">Img:</label>
-        <input type="file" name="prudImg" id="prudImg" />
+        <input
+          type="file"
+          name="prudImg"
+          id="prudImg"
+          onChange={handleImgChange}
+        />
       </div>
       <div>
         <button>Create</button>
